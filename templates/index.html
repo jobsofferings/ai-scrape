@@ -1,147 +1,180 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="baidu-site-verification" content="codeva-GRkg3eMDSZ">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MarketSeeker</title>
-    <meta name="description" content="AI智能电商数据采集与分析工具">
-    <meta name="keywords"
-      content="AI,智能电商,数据采集,分析">
-    <link rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-      crossorigin="anonymous">
-    <link rel="stylesheet" href="/static/css/index.css">
-  </head>
-  <body>
-    <div class="top-alert-info"></div>
-    <div class="header">
-      <div class="header-container">
-        <div>
-          <a href="/" class="logo" style="color:black;">
-            <span style="color: #0075ff;">MarketSeeker</span>
-          </a>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="baidu-site-verification" content="codeva-GRkg3eMDSZ">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>MarketSeeker</title>
+        <meta name="description" content="AI智能电商数据采集与分析工具">
+        <meta name="keywords" content="AI,智能电商,数据采集,分析">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" crossorigin="anonymous">
+        <link rel="stylesheet" href="/static/css/index.css">
+    </head>
+    <body>
+        <div class="top-alert-info"></div>
+        <div class="header">
+            <div class="header-container">
+                <div>
+                    <a href="/" class="logo" style="color:black;">
+                        <span style="color: #0075ff;">MarketSeeker</span>
+                    </a>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="file-container">
-      <div class="title">MarketSeeker</div>
-      <div class="label">你的 AI 智能电商数据采集与分析工具</div>
-      <div style="margin-bottom: 12px; width: 540px; margin-top: 40px; display: flex;">
-        <label for="staticEmail" class="col-sm-2 col-form-label" style="font-size: 14px;">数据数量</label>
-        <div class="col-sm-10">
-          <input type="number" class="form-control" id="max-count" value="5"
-            placeholder="请输入要爬取的最大数据数量">
+        <div class="file-container">
+            <div class="title">MarketSeeker</div>
+            <div class="label">你的 AI 智能电商数据采集与分析工具</div>
+            <div style="margin-bottom: 12px; width: 540px; margin-top: 40px; display: flex;">
+                <label for="staticEmail" class="col-sm-2 col-form-label" style="font-size: 14px;">数据数量</label>
+                <div class="col-sm-10">
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="max-count"
+                        value="5"
+                        placeholder="请输入要爬取的最大数据数量"
+                    >
+                </div>
+            </div>
+            <div style="margin-bottom: 12px; width: 540px; margin-top: 20px; display: flex;">
+                <label for="inputPassword" class="col-sm-2 col-form-label" style="font-size: 14px;">产品类型</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="keyword" placeholder="请输入产品类型">
+                </div>
+            </div>
+            <div class="progress display-none" id="progress" style="width: 600px; margin-top: 24px;">
+                <div
+                    id="progress-bar"
+                    class="progress-bar progress-bar-striped progress-bar-animated"
+                    role="progressbar"
+                    aria-valuenow="0"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    style="width: 0%"
+                ></div>
+            </div>
+            <div class="btn-flex" id="btn-flex-id">
+                <button type="button" class="btn btn-primary upload-button" id="task-button">
+                    <span
+                        class="spinner-border spinner-border-sm hidden"
+                        role="status"
+                        aria-hidden="true"
+                        id="loading-icon"
+                    ></span>
+                    发起生成
+                </button>
+                <button type="button" class="btn btn-success upload-button display-none" id="download-button">下载文件</button>
+            </div>
+            <div class="message" id="message"></div>
         </div>
-      </div>
-      <div style="margin-bottom: 12px; width: 540px; margin-top: 20px; display: flex;">
-        <label for="inputPassword" class="col-sm-2 col-form-label" style="font-size: 14px;">产品类型</label>
-        <div class="col-sm-10">
-          <input class="form-control" id="keyword" placeholder="请输入产品类型">
+        <div class="collapse-container">
+            <div>
+                <div
+                    class="card card-body card-list-item"
+                    data-toggle="collapse"
+                    href="#collapseExample"
+                    aria-expanded="false"
+                    aria-controls="collapseExample"
+                >
+                    MarketSeeker 能抓取哪些平台的数据？
+                </div>
+            </div>
+            <div class="collapse card-collapse-item" id="collapseExample">
+                <div class="card card-body">
+                    目前，MarketSeeker 支持从京东抓取产品数据，未来将支持更多电商平台（如淘宝、拼多多等）。
+                </div>
+            </div>
+            <div>
+                <div
+                    class="card card-body card-list-item"
+                    data-toggle="collapse"
+                    href="#collapseExample2"
+                    aria-expanded="false"
+                    aria-controls="collapseExample2"
+                >
+                    如何使用 MarketSeeker？
+                </div>
+            </div>
+            <div class="collapse card-collapse-item" id="collapseExample2">
+                <div class="card card-body">
+                    用户只需输入关键词、选择数据数量及导出格式，然后点击“开始爬取”按钮，系统将自动抓取相关数据并生成可下载文件。
+                </div>
+            </div>
+            <div>
+                <div
+                    class="card card-body card-list-item"
+                    data-toggle="collapse"
+                    href="#collapseExample3"
+                    aria-expanded="false"
+                    aria-controls="collapseExample3"
+                >
+                    导出文件的格式有哪些？
+                </div>
+            </div>
+            <div class="collapse card-collapse-item" id="collapseExample3">
+                <div class="card card-body">
+                    目前支持 CSV 和 JSON 两种格式，用户可以根据需求选择合适的格式进行导出。
+                </div>
+            </div>
+            <div>
+                <div
+                    class="card card-body card-list-item"
+                    data-toggle="collapse"
+                    href="#collapseExample4"
+                    aria-expanded="false"
+                    aria-controls="collapseExample4"
+                >
+                    MarketSeeker 的数据分析功能如何？
+                </div>
+            </div>
+            <div class="collapse card-collapse-item" id="collapseExample4">
+                <div class="card card-body">
+                    MarketSeeker 使用 AI 技术自动分析并生成产品的详细信息，包括标签、成分、尺寸等，帮助用户更全面地了解产品信息。
+                </div>
+            </div>
+            <div>
+                <div
+                    class="card card-body card-list-item"
+                    data-toggle="collapse"
+                    href="#collapseExample5"
+                    aria-expanded="false"
+                    aria-controls="collapseExample5"
+                >
+                    使用 MarketSeeker 需要多少时间？
+                </div>
+            </div>
+            <div class="collapse card-collapse-item" id="collapseExample5">
+                <div class="card card-body">
+                    数据抓取的时间取决于所选的数据数量，通常几分钟内就可以完成任务。
+                </div>
+            </div>
+            <div>
+                <div
+                    class="card card-body card-list-item"
+                    data-toggle="collapse"
+                    href="#collapseExample6"
+                    aria-expanded="false"
+                    aria-controls="collapseExample6"
+                >
+                    数据安全性如何保障？
+                </div>
+            </div>
+            <div class="collapse card-collapse-item" id="collapseExample6">
+                <div class="card card-body">
+                    MarketSeeker 所有的数据处理过程都在安全环境下进行，且用户的关键词和导出数据仅用于用户自身需求，不会对外泄露。
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="btn-flex" id="btn-flex-id">
-        <button type="button" class="btn btn-primary upload-button"
-          id="task-button">
-          <span
-            class="spinner-border spinner-border-sm hidden"
-            role="status"
-            aria-hidden="true"
-            id="loading-icon"></span>
-          发起生成
-        </button>
-        <button type="button" class="btn btn-success upload-button display-none"
-          id="download-button">下载文件</button>
-      </div>
-      <div class="message" id="message"></div>
-    </div>
-    <div class="collapse-container">
-      <div>
-        <div class="card card-body card-list-item" data-toggle="collapse"
-          href="#collapseExample" aria-expanded="false"
-          aria-controls="collapseExample">
-          MarketSeeker 能抓取哪些平台的数据？
-        </div>
-      </div>
-      <div class="collapse card-collapse-item" id="collapseExample">
-        <div class="card card-body">
-          目前，MarketSeeker 支持从京东抓取产品数据，未来将支持更多电商平台（如淘宝、拼多多等）。
-        </div>
-      </div>
-      <div>
-        <div class="card card-body card-list-item" data-toggle="collapse"
-          href="#collapseExample2" aria-expanded="false"
-          aria-controls="collapseExample2">
-          如何使用 MarketSeeker？
-        </div>
-      </div>
-      <div class="collapse card-collapse-item" id="collapseExample2">
-        <div class="card card-body">
-          用户只需输入关键词、选择数据数量及导出格式，然后点击“开始爬取”按钮，系统将自动抓取相关数据并生成可下载文件。
-        </div>
-      </div>
-      <div>
-        <div class="card card-body card-list-item" data-toggle="collapse"
-          href="#collapseExample3" aria-expanded="false"
-          aria-controls="collapseExample3">
-          导出文件的格式有哪些？
-        </div>
-      </div>
-      <div class="collapse card-collapse-item" id="collapseExample3">
-        <div class="card card-body">
-          目前支持 CSV 和 JSON 两种格式，用户可以根据需求选择合适的格式进行导出。
-        </div>
-      </div>
-      <div>
-        <div class="card card-body card-list-item" data-toggle="collapse"
-          href="#collapseExample4" aria-expanded="false"
-          aria-controls="collapseExample4">
-          MarketSeeker 的数据分析功能如何？
-        </div>
-      </div>
-      <div class="collapse card-collapse-item" id="collapseExample4">
-        <div class="card card-body">
-          MarketSeeker 使用 AI 技术自动分析并生成产品的详细信息，包括标签、成分、尺寸等，帮助用户更全面地了解产品信息。
-        </div>
-      </div>
-      <div>
-        <div class="card card-body card-list-item" data-toggle="collapse"
-          href="#collapseExample5" aria-expanded="false"
-          aria-controls="collapseExample5">
-          使用 MarketSeeker 需要多少时间？
-        </div>
-      </div>
-      <div class="collapse card-collapse-item" id="collapseExample5">
-        <div class="card card-body">
-          数据抓取的时间取决于所选的数据数量，通常几分钟内就可以完成任务。
-        </div>
-      </div>
-      <div>
-        <div class="card card-body card-list-item" data-toggle="collapse"
-          href="#collapseExample6" aria-expanded="false"
-          aria-controls="collapseExample6">
-          数据安全性如何保障？
-        </div>
-      </div>
-      <div class="collapse card-collapse-item" id="collapseExample6">
-        <div class="card card-body">
-          MarketSeeker 所有的数据处理过程都在安全环境下进行，且用户的关键词和导出数据仅用于用户自身需求，不会对外泄露。
-        </div>
-      </div>
-    </div>
-    <script
-      src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
-      crossorigin="anonymous"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
-      crossorigin="anonymous"></script>
-    <script>
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+        <script>
         window.onload = function() {
           const taskButton = document.getElementById('task-button');
           taskButton.addEventListener('click', fetchTask);
         }
 
         let alertTimer = null;
+        let taskNumber = 0;
 
         function baseAlert(message, type = 'info') {
             // top-alert-info
@@ -172,6 +205,13 @@
             fileInput.click();
         }
 
+        function generateMachineToken() {
+          const navigatorInfo = window.navigator.userAgent;
+          const platform = window.navigator.platform;
+          const rawData = `${navigatorInfo}-${platform}`;
+          return rawData;
+        }
+
         function excelExport ({
           dataSource = [],
           titles = [],
@@ -198,6 +238,38 @@
           document.body.removeChild(_a)
         }
 
+        // 轮询函数
+        function pollTaskProgress() {
+          const intervalId = setInterval(() => {
+            fetch(`/status`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'token': generateMachineToken()
+              }
+            })
+            .then(response => response.json())
+            .then(data => {
+              console.log('轮询结果:', data);
+              const progressBar = document.getElementById('progress-bar');
+              const all_length = data?.data?.max_count || 5;
+              const current_length = data?.data?.task_list.length || 0;
+              const progressValue = (current_length / all_length) * 100;
+              progressBar.style.width = `${progressValue}%`;
+              progressBar.setAttribute('aria-valuenow', progressValue);
+              if (data.status === 'completed') {
+                clearInterval(intervalId);
+                const progress = document.getElementById('progress');
+                progress.classList.add('display-none');
+              }
+            })
+            .catch(error => {
+              console.error('轮询错误:', error);
+              clearInterval(intervalId);
+            });
+          }, 1000);
+        }
+
         function fetchTask() {
           const maxCount = document.getElementById('max-count').value;
           const keyword = document.getElementById('keyword').value;
@@ -210,11 +282,15 @@
             return;
           }
           const loadingIcon = document.getElementById('loading-icon');
+          const progress = document.getElementById('progress');
           loadingIcon.classList.remove('hidden');
+          progress.classList.remove('display-none');
+          taskNumber = Number(maxCount)
           fetch('/scrape', {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'token': generateMachineToken()
             },
             body: JSON.stringify({
               max_count: Number(maxCount) || 0,
@@ -223,7 +299,6 @@
           })
           .then(response => response.json())
           .then(data => {
-            // 将 Unicode 转义序列转换为实际字符
             const decodedData = data.data.map(item => 
               item.map(s => 
                 s.replace(/\\u([\dA-Fa-f]{4})/g, (_, code) => 
@@ -232,7 +307,7 @@
               )
             );
             loadingIcon.classList.add('hidden');
-            console.log(decodedData, 'decodedData');
+            progress.classList.add('display-none');
             const downloadButton = document.getElementById('download-button');
             downloadButton.classList.remove('display-none');
             downloadButton.addEventListener('click', () => {
@@ -246,8 +321,11 @@
               })
             });
           })
-          .catch(error => console.error('Error:', error));
+          .finally(() => {
+            taskNumber = 0;
+          });
+          pollTaskProgress();
         }
         </script>
-  </body>
+    </body>
 </html>

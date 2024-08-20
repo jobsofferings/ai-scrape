@@ -222,6 +222,8 @@ def askAI(img_url, base_url):
 #         time.sleep(1)
 #         pass
     
+temp_task_map = {}
+
 @app.route('/scrape', methods=['POST'])
 def scrape_data():
     try:
@@ -229,7 +231,13 @@ def scrape_data():
         data = request.json
         max_count = data.get('max_count')
         item = data.get('item')
-        
+        # 从 headers 拿 token
+        token = request.headers.get('token')
+        temp_task_map[token] = {
+            "max_count": max_count,
+            "item": item,
+            "task_list": []
+        }
         # 检查参数是否有效
         if not all([max_count, item]):
             return jsonify({"error": "Missing required parameters"}), 400
@@ -246,9 +254,7 @@ def scrape_data():
                   item,item)
                 n = i*2-1
                 url = url+"&pvid=e028fd4d4ba34c848d58d1c1f46c0259&page={}".format(n)
-                print(url)
                 data = getdata(url)
-                print(data)
                 for d in data:
                     data_list.append(d)
                 print(len(data_list))
@@ -281,7 +287,9 @@ def scrape_data():
                     time.sleep(2)
                     print("当前正在第{}条！！！".format(count),input1) 
                     result.append(input1)
+                    temp_task_map[token]["task_list"].append('true')
                 except Exception as e:
+                    temp_task_map[token]["task_list"].append('false')
                     print(f"Failed to fix data: {e}")
                     
                 # file1 = open(r'{}/{}_{}.csv'.format(lujing,item,time111), mode='a', encoding='utf-8-sig', newline='')   #打开这个文件，没有则自动创建，以追加形式写入，’utf-8‘编码方法编码
@@ -289,6 +297,7 @@ def scrape_data():
                 # write1.writerow(input1)  #csv表格写入这些数据
                 # file1.close()
             else:
+                  temp_task_map[token]["task_list"].append('false')
                   time.sleep(1)
                   pass
         print(result)         
@@ -297,6 +306,18 @@ def scrape_data():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@app.route('/status', methods=['GET'])
+def get_status():
+    token = request.headers.get('token')
+    if token not in temp_task_map:
+        return jsonify({"error": "Invalid token"}), 400
+    task_data = temp_task_map[token]
+    status = "running"
+    if len(task_data["task_list"]) == int(task_data["max_count"]):
+        status = "completed"
+    return jsonify({"status":status, "data": task_data}), 200
+
 
 @app.route('/', methods=['GET'])
 def index():
