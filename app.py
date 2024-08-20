@@ -164,13 +164,13 @@ def askAI(img_url, base_url):
 
 
 
-if not os.path.exists('data.csv'):
-    file1 = open(r'data.csv', mode='a', encoding='utf-8-sig', newline='')   #打开这个文件，没有则自动创建，以追加形式写入，’utf-8‘编码方法编码
-    write1 = csv.writer(file1)  #用csv写入
-    write1.writerow(['链接','Description(描述)','价格','店铺','Categories(类别)','Product format(产品规格)','Manufacturing location(生产地点)'
-                     ,'Product volume/size(产品体积/尺寸)','Packageformat(包装形式)','Package material(包装材料)','Label(标签)'
-                     ,'Numbers of printing color (印刷颜色数量）','Dimension(尺寸)','Company(公司)','Ingredient of product (产品成分)'])  #csv表格写入这些数据
-    file1.close()
+# if not os.path.exists('data.csv'):
+#     file1 = open(r'data.csv', mode='a', encoding='utf-8-sig', newline='')   #打开这个文件，没有则自动创建，以追加形式写入，’utf-8‘编码方法编码
+#     write1 = csv.writer(file1)  #用csv写入
+#     write1.writerow(['链接','Description(描述)','价格','店铺','Categories(类别)','Product format(产品规格)','Manufacturing location(生产地点)'
+#                      ,'Product volume/size(产品体积/尺寸)','Packageformat(包装形式)','Package material(包装材料)','Label(标签)'
+#                      ,'Numbers of printing color (印刷颜色数量）','Dimension(尺寸)','Company(公司)','Ingredient of product (产品成分)'])  #csv表格写入这些数据
+#     file1.close()
 
 
 # max_count = input("请输入要爬取的最大数量：")
