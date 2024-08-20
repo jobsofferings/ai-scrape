@@ -20,8 +20,7 @@
       <div class="header-container">
         <div>
           <a href="/" class="logo" style="color:black;">
-            会议
-            <span style="color: #0075ff;">桌牌</span>
+            <span style="color: #0075ff;">MarketSeeker</span>
           </a>
         </div>
       </div>
@@ -29,15 +28,15 @@
     <div class="file-container">
       <div class="title">MarketSeeker</div>
       <div class="label">你的 AI 智能电商数据采集与分析工具</div>
-      <div class="mb-3 row w-[500px] mt-10">
-        <label for="staticEmail" class="col-sm-2 col-form-label">数据数量</label>
+      <div class="mb-3 row w-[540px] mt-10">
+        <label for="staticEmail" class="col-sm-2 col-form-label text-sm">数据数量</label>
         <div class="col-sm-10">
           <input type="number" class="form-control" id="max-count" value="5"
             placeholder="请输入要爬取的最大数据数量">
         </div>
       </div>
-      <div class="mb-3 row w-[500px]">
-        <label for="inputPassword" class="col-sm-2 col-form-label">产品类型</label>
+      <div class="mb-3 row w-[540px]">
+        <label for="inputPassword" class="col-sm-2 col-form-label text-sm">产品类型</label>
         <div class="col-sm-10">
           <input class="form-control" id="keyword" placeholder="请输入产品类型">
         </div>
@@ -213,7 +212,7 @@
           }
           const loadingIcon = document.getElementById('loading-icon');
           loadingIcon.classList.remove('hidden');
-          fetch('http://127.0.0.1:5000/scrape', {
+          fetch('/scrape', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
