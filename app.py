@@ -316,7 +316,7 @@ def get_status(task_id):
             print(tasks, '-----------------')
             return jsonify({"error": "Invalid task ID"}), 400
         task_data = tasks[task_id]
-    return jsonify(task_data), 200
+        return jsonify(task_data), 200
 
 @app.route('/', methods=['GET'])
 def index():
