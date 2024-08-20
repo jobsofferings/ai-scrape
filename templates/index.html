@@ -80,7 +80,8 @@
                 </div>
             </div>
             <div class="collapse card-collapse-item" id="collapseExample">
-                <div class="card card-body">
+              <!-- // 变淡，变字体 -->
+                <div class="card card-body" style="font-size: 12px;">
                     目前，MarketSeeker 支持从京东抓取产品数据，未来将支持更多电商平台（如淘宝、拼多多等）。
                 </div>
             </div>
@@ -264,11 +265,23 @@
                 progress.classList.add('display-none');
                 const downloadButton = document.getElementById('download-button');
                 downloadButton.classList.remove('display-none');
+              } else if (data.status === 'failed') {
+                clearInterval(intervalId);
+                const loadingIcon = document.getElementById('loading-icon');
+                const progress = document.getElementById('progress');
+                loadingIcon.classList.add('hidden');
+                progress.classList.add('display-none');
+                baseAlert('任务失败', 'error');
               }
             })
             .catch(error => {
               console.error('轮询错误:', error);
               clearInterval(intervalId);
+              const loadingIcon = document.getElementById('loading-icon');
+              const progress = document.getElementById('progress');
+              loadingIcon.classList.add('hidden');
+              progress.classList.add('display-none');
+              baseAlert('任务请求错误');
             });
           }, 1000);
         }
