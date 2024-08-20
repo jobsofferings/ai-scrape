@@ -252,7 +252,7 @@
             .then(data => {
               const progressBar = document.getElementById('progress-bar');
               const all_length = data?.max_count || 5;
-              const current_length = data?.task_list.filter(status => status === 'true').length || 0;
+              const current_length = data?.task_list.length || 0;
               const progressValue = (current_length / all_length) * 100;
               progressBar.style.width = `${progressValue}%`;
               progressBar.setAttribute('aria-valuenow', progressValue);
