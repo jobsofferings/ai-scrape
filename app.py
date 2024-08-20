@@ -265,7 +265,6 @@ def scrape_data():
                         print(f"Failed to fix data: {e}")
 
                 count = 0
-                result = []
                 for data in data_list:
                     if 1:
                         try:
@@ -282,12 +281,11 @@ def scrape_data():
                             input1 = data + [leixing, pinlei, guochang] + [answer['Product volume/size(产品体积/尺寸)'], answer['Packageformat(包装形式)'], answer['Package material(包装材料)'], answer['Label(标签)'], answer['Numbers of printing color (印刷颜色数量）'], answer['Dimension(尺寸)'], answer['Company(公司)'], answer['Ingredient of product (产品成分)']]
                             time.sleep(2)
                             print(f"当前正在第{count}条！！！", input1)
-                            result.append(input1)
+                            tasks[task_id]["result"].append(input1)
                             tasks[task_id]["task_list"].append('true')
                         except Exception as e:
                             tasks[task_id]["task_list"].append('false')
                             print(f"Failed to fix data: {e}")
-                tasks[task_id]["result"] = result
                 tasks[task_id]["status"] = "completed"
             except Exception as e:
                 tasks[task_id]["status"] = "failed"

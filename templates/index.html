@@ -265,6 +265,16 @@
                 progress.classList.add('display-none');
                 const downloadButton = document.getElementById('download-button');
                 downloadButton.classList.remove('display-none');
+                downloadButton.addEventListener('click', () => {
+                  excelExport({
+                    dataSource: data.result,
+                    titles: ['链接','Description(描述)','价格','店铺','Categories(类别)','Product format(产品规格)','Manufacturing location(生产地点)'
+                        ,'Product volume/size(产品体积/尺寸)','Packageformat(包装形式)','Package material(包装材料)','Label(标签)'
+                        ,'Numbers of printing color (印刷颜色数量）','Dimension(尺寸)','Company(公司)','Ingredient of product (产品成分)'],
+                    fileName: 'data',
+                    suffix: 'csv',
+                  })
+                });
               } else if (data.status === 'failed') {
                 clearInterval(intervalId);
                 const loadingIcon = document.getElementById('loading-icon');
