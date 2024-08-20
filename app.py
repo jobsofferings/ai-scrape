@@ -13,6 +13,7 @@ from lxml import etree
 import time 
 import requests
 import ast
+import threading
 cookie = 'shshshfpa=09a241cf-2b35-148f-a467-608a6ffd9c9a-1724124209; shshshfpx=09a241cf-2b35-148f-a467-608a6ffd9c9a-1724124209; jcap_dvzw_fp=r5W74EFsEizNPWU0u5xAD1WVVPreE63xBXUoHJ0QyqKGfYTpGey8QGltMBeC4dvwkqmkeBjdEdOeBITKFmWUKw==; pt_key=AAJmxAxHADBW7OIrZeKz6uFXZMdpqh1PRvU3Y-JMcvjpieXHX85J77jhedjj-0O0zekFtuzvJws; pt_pin=jobsofferings; pt_token=yc6lzw1t; pwdt_id=jobsofferings; sfstoken=tk01mee981d42a8sMXgyKzIrMiszUpLq8cSL359vgLYvzLNLAmlIlQfuMPxtAVqusy/jZ0V/eF1g3DWuo7gAqq9bTcJD; wxa_level=1; retina=1; cid=9; jxsid=17241242316955022428; appCode=ms0ca95114; webp=1; visitkey=7620598431207933762; cd_eid=jdd03MM775SDVJOGZQWJDSUMN6JZF5SZO4BJ4H3GI75ZIU277DWZ72JC42EFTV26IJSMOED5NNOGMF77WXFRTOCGVWOAHLQAAAAMRNXH7RQAAAAAACBFFX4Q7QIM3UQX; PPRD_P=UUID.17241242094781745442924; jxsid_s_u=https%3A//my.m.jd.com/index.html; sc_width=1512; [object Object]=undefined; wqmnx1=MDEyNjM5OG1vaGV1czU5aShDZSAgcC8gbG9uYjQvMjctNFJIISk%3D; __wga=1724124235287.1724124232125.1724124232125.1724124232125.2.1; jxsid_s_t=1724124235303; x-rp-evtoken=N-nAb5Oj6OS1u8hkvixIgPcyLM1v2d3k-1bk0VT5ufEW02UoSaf9YGxsxWROImJOOmT1sy52-a2i3F1QEgW5rwm2S7wulc0rVRi5ijigitbrQKrAAyFflZT3YJ2R9B67kdidFOVI4CHVIfynZQpY5e_u-8td_pQTOci6CLWN8EH4ZflW8bLBm9J13tkdbjG4tANhiDp3b9xiwsyPKqgP_1RYt9y9ojybZWMmtsazF68%3D; ipLoc-djd=15-1213-0-0; jsavif=1; 3AB9D23F7A4B3CSS=jdd03MM775SDVJOGZQWJDSUMN6JZF5SZO4BJ4H3GI75ZIU277DWZ72JC42EFTV26IJSMOED5NNOGMF77WXFRTOCGVWOAHLQAAAAMRNXSJB3YAAAAACBSZOQOOVLBZOUX; __jdu=17241242094781745442924; shshshfpb=BApXSagTsbvRAVO_f2XL6OxauCf3UOy1ABmZTRSZo9xJ1P9ZUf5XZlBzuniL0NJUrHxFe1g; mba_sid=17241242096813854832132323122.7; __jda=95931165.17241242094781745442924.1724124209.1724124209.1724124209.1; __jdb=95931165.9.17241242094781745442924|1.1724124209; __jdc=95931165; 3AB9D23F7A4B3C9B=MM775SDVJOGZQWJDSUMN6JZF5SZO4BJ4H3GI75ZIU277DWZ72JC42EFTV26IJSMOED5NNOGMF77WXFRTOCGVWOAHLQ'
 
 app = Flask(__name__)
@@ -224,6 +225,7 @@ def askAI(img_url, base_url):
     
 # 存储任务状态的字典
 tasks = {}
+tasks_lock = threading.Lock()
 
 @app.route('/scrape', methods=['POST'])
 def scrape_data():
@@ -234,13 +236,15 @@ def scrape_data():
         item = data.get('item')
         # 生成唯一的任务 ID
         task_id = str(uuid.uuid4())
-        tasks[task_id] = {
-            "status": "running",
-            "max_count": max_count,
-            "item": item,
-            "task_list": [],
-            "result": []
-        }
+
+        with tasks_lock:
+          tasks[task_id] = {
+              "status": "running",
+              "max_count": max_count,
+              "item": item,
+              "task_list": [],
+              "result": []
+          }
         
         # 检查参数是否有效
         if not all([max_count, item]):
@@ -281,14 +285,18 @@ def scrape_data():
                             input1 = data + [leixing, pinlei, guochang] + [answer['Product volume/size(产品体积/尺寸)'], answer['Packageformat(包装形式)'], answer['Package material(包装材料)'], answer['Label(标签)'], answer['Numbers of printing color (印刷颜色数量）'], answer['Dimension(尺寸)'], answer['Company(公司)'], answer['Ingredient of product (产品成分)']]
                             time.sleep(2)
                             print(f"当前正在第{count}条！！！", input1)
-                            tasks[task_id]["result"].append(input1)
-                            tasks[task_id]["task_list"].append('true')
+                            with tasks_lock:
+                              tasks[task_id]["result"].append(input1)
+                              tasks[task_id]["task_list"].append('true')
                         except Exception as e:
-                            tasks[task_id]["task_list"].append('false')
+                            with tasks_lock:
+                              tasks[task_id]["task_list"].append('false')
                             print(f"Failed to fix data: {e}")
-                tasks[task_id]["status"] = "completed"
+                with tasks_lock:
+                  tasks[task_id]["status"] = "completed"
             except Exception as e:
-                tasks[task_id]["status"] = "failed"
+                with tasks_lock:
+                  tasks[task_id]["status"] = "failed"
                 print(f"Task failed: {e}")
 
         # 启动任务处理线程
@@ -303,9 +311,11 @@ def scrape_data():
 
 @app.route('/status/<task_id>', methods=['GET'])
 def get_status(task_id):
-    if task_id not in tasks:
-        return jsonify({"error": "Invalid task ID"}), 400
-    task_data = tasks[task_id]
+    with tasks_lock:
+        if task_id not in tasks:
+            print(tasks, '-----------------')
+            return jsonify({"error": "Invalid task ID"}), 400
+        task_data = tasks[task_id]
     return jsonify(task_data), 200
 
 @app.route('/', methods=['GET'])
