@@ -239,9 +239,9 @@
         }
 
         // 轮询函数
-        function pollTaskProgress() {
+        function pollTaskProgress(taskId) {
           const intervalId = setInterval(() => {
-            fetch(`/status`, {
+            fetch(`/status/${taskId}`, {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
@@ -250,17 +250,20 @@
             })
             .then(response => response.json())
             .then(data => {
-              console.log('轮询结果:', data);
               const progressBar = document.getElementById('progress-bar');
-              const all_length = data?.data?.max_count || 5;
-              const current_length = data?.data?.task_list.length || 0;
+              const all_length = data?.max_count || 5;
+              const current_length = data?.task_list.filter(status => status === 'true').length || 0;
               const progressValue = (current_length / all_length) * 100;
               progressBar.style.width = `${progressValue}%`;
               progressBar.setAttribute('aria-valuenow', progressValue);
               if (data.status === 'completed') {
                 clearInterval(intervalId);
                 const progress = document.getElementById('progress');
+                const loadingIcon = document.getElementById('loading-icon');
+                loadingIcon.classList.add('hidden');
                 progress.classList.add('display-none');
+                const downloadButton = document.getElementById('download-button');
+                downloadButton.classList.remove('display-none');
               }
             })
             .catch(error => {
@@ -281,11 +284,12 @@
             baseAlert('请输入不小于 1 的整数', 'error');
             return;
           }
+          
           const loadingIcon = document.getElementById('loading-icon');
           const progress = document.getElementById('progress');
           loadingIcon.classList.remove('hidden');
           progress.classList.remove('display-none');
-          taskNumber = Number(maxCount)
+
           fetch('/scrape', {
             method: 'POST',
             headers: {
@@ -299,33 +303,15 @@
           })
           .then(response => response.json())
           .then(data => {
-            const decodedData = data.data.map(item => 
-              item.map(s => 
-                s.replace(/\\u([\dA-Fa-f]{4})/g, (_, code) => 
-                  String.fromCharCode(parseInt(code, 16))
-                )
-              )
-            );
+            const taskId = data.task_id; // 获取任务 ID
+            pollTaskProgress(taskId); // 开始轮询任务进度
+          })
+          .catch(error => {
+            console.error('任务请求错误:', error);
             loadingIcon.classList.add('hidden');
             progress.classList.add('display-none');
-            const downloadButton = document.getElementById('download-button');
-            downloadButton.classList.remove('display-none');
-            downloadButton.addEventListener('click', () => {
-              excelExport({
-                dataSource: decodedData,
-                titles: ['链接','Description(描述)','价格','店铺','Categories(类别)','Product format(产品规格)','Manufacturing location(生产地点)'
-                     ,'Product volume/size(产品体积/尺寸)','Packageformat(包装形式)','Package material(包装材料)','Label(标签)'
-                     ,'Numbers of printing color (印刷颜色数量）','Dimension(尺寸)','Company(公司)','Ingredient of product (产品成分)'],
-                fileName: 'data',
-                suffix: 'csv',
-              })
-            });
-          })
-          .finally(() => {
-            taskNumber = 0;
           });
-          pollTaskProgress();
         }
-        </script>
+      </script>
     </body>
 </html>

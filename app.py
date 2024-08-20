@@ -7,7 +7,7 @@ import datetime
 import csv
 import os
 import random
-
+import uuid
 import pandas as pd
 from lxml import etree
 import time 
@@ -222,7 +222,8 @@ def askAI(img_url, base_url):
 #         time.sleep(1)
 #         pass
     
-temp_task_map = {}
+# 存储任务状态的字典
+tasks = {}
 
 @app.route('/scrape', methods=['POST'])
 def scrape_data():
@@ -231,93 +232,83 @@ def scrape_data():
         data = request.json
         max_count = data.get('max_count')
         item = data.get('item')
-        # 从 headers 拿 token
-        token = request.headers.get('token')
-        temp_task_map[token] = {
+        # 生成唯一的任务 ID
+        task_id = str(uuid.uuid4())
+        tasks[task_id] = {
+            "status": "running",
             "max_count": max_count,
             "item": item,
-            "task_list": []
+            "task_list": [],
+            "result": []
         }
+        
         # 检查参数是否有效
         if not all([max_count, item]):
             return jsonify({"error": "Missing required parameters"}), 400
         
-        time111 = datetime.datetime.now().strftime('%Y-%m-%d  %H:%M:%S')
-        
-        # 这里你可以调用你现有的爬虫功能
-        data_list = []  # 这里应该是调用你的爬虫逻辑，获取数据
-
-        for i in range(1,5):
-    
+        # 启动后台任务
+        def run_task(task_id):
             try:
-                url = 'https://search.jd.com/Search?keyword={}&enc=utf-8&wq={}'.format(
-                  item,item)
-                n = i*2-1
-                url = url+"&pvid=e028fd4d4ba34c848d58d1c1f46c0259&page={}".format(n)
-                data = getdata(url)
-                for d in data:
-                    data_list.append(d)
-                print(len(data_list))
-                if len(data_list) > max_count:
-                    data_list = data_list[:max_count]
-                    break
-                time.sleep(2)
-            except OSError as e:
-                print(f"Failed to fix data: {e}")
-        
-        count=0
-        result = []
-        for data in data_list:
-            if 1:
-                try:
-                    count+=1
-                    leixing,pinlei,guochang,img_list = get_info1(data[0])
-                    load_dotenv()
+                time111 = datetime.datetime.now().strftime('%Y-%m-%d  %H:%M:%S')
+                data_list = []
 
-                    img_urls = img_list
-                    base_url = "https://one-api.bltcy.top/v1"
-                    answer = askAI(img_urls, base_url)
-                    data[0] = 'https://item.jd.com/{}.html'.format(data[0])
-                    #print(data + [leixing,pinlei,guochang])
-                    answer = answer.split('{')[-1].split('}')[0]
-                    answer = '{' + answer + '}'
-                    answer = ast.literal_eval(answer)
-                    #print(answer['Product volume/size(产品体积/尺寸)'],answer['Packageformat(包装形式)'],answer['Package material(包装材料)'],answer['Label(标签)'],answer['Numbers of printing color (印刷颜色数量）'],answer['Dimension(尺寸)'],answer['Ingredient of product (产品成分)'])
-                    input1 = data + [leixing,pinlei,guochang] + [answer['Product volume/size(产品体积/尺寸)'],answer['Packageformat(包装形式)'],answer['Package material(包装材料)'],answer['Label(标签)'],answer['Numbers of printing color (印刷颜色数量）'],answer['Dimension(尺寸)'],answer['Company(公司)'],answer['Ingredient of product (产品成分)']]
-                    time.sleep(2)
-                    print("当前正在第{}条！！！".format(count),input1) 
-                    result.append(input1)
-                    temp_task_map[token]["task_list"].append('true')
-                except Exception as e:
-                    temp_task_map[token]["task_list"].append('false')
-                    print(f"Failed to fix data: {e}")
-                    
-                # file1 = open(r'{}/{}_{}.csv'.format(lujing,item,time111), mode='a', encoding='utf-8-sig', newline='')   #打开这个文件，没有则自动创建，以追加形式写入，’utf-8‘编码方法编码
-                # write1 = csv.writer(file1)  #用csv写入
-                # write1.writerow(input1)  #csv表格写入这些数据
-                # file1.close()
-            else:
-                  temp_task_map[token]["task_list"].append('false')
-                  time.sleep(1)
-                  pass
-        print(result)         
-        # 返回成功信息和保存的文件路径
-        return jsonify({"message": "Scraping completed", "data": result}), 200
+                for i in range(1, 5):
+                    try:
+                        url = f'https://search.jd.com/Search?keyword={item}&enc=utf-8&wq={item}&page={(i*2)-1}'
+                        data = getdata(url)
+                        data_list.extend(data)
+                        if len(data_list) > max_count:
+                            data_list = data_list[:max_count]
+                            break
+                        time.sleep(2)
+                    except OSError as e:
+                        print(f"Failed to fix data: {e}")
+
+                count = 0
+                result = []
+                for data in data_list:
+                    if 1:
+                        try:
+                            count += 1
+                            leixing, pinlei, guochang, img_list = get_info1(data[0])
+                            load_dotenv()
+                            img_urls = img_list
+                            base_url = "https://one-api.bltcy.top/v1"
+                            answer = askAI(img_urls, base_url)
+                            data[0] = f'https://item.jd.com/{data[0]}.html'
+                            answer = answer.split('{')[-1].split('}')[0]
+                            answer = '{' + answer + '}'
+                            answer = ast.literal_eval(answer)
+                            input1 = data + [leixing, pinlei, guochang] + [answer['Product volume/size(产品体积/尺寸)'], answer['Packageformat(包装形式)'], answer['Package material(包装材料)'], answer['Label(标签)'], answer['Numbers of printing color (印刷颜色数量）'], answer['Dimension(尺寸)'], answer['Company(公司)'], answer['Ingredient of product (产品成分)']]
+                            time.sleep(2)
+                            print(f"当前正在第{count}条！！！", input1)
+                            result.append(input1)
+                            tasks[task_id]["task_list"].append('true')
+                        except Exception as e:
+                            tasks[task_id]["task_list"].append('false')
+                            print(f"Failed to fix data: {e}")
+                tasks[task_id]["result"] = result
+                tasks[task_id]["status"] = "completed"
+            except Exception as e:
+                tasks[task_id]["status"] = "failed"
+                print(f"Task failed: {e}")
+
+        # 启动任务处理线程
+        import threading
+        threading.Thread(target=run_task, args=(task_id,)).start()
+
+        # 返回任务 ID
+        return jsonify({"task_id": task_id}), 202
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route('/status', methods=['GET'])
-def get_status():
-    token = request.headers.get('token')
-    if token not in temp_task_map:
-        return jsonify({"error": "Invalid token"}), 400
-    task_data = temp_task_map[token]
-    status = "running"
-    if len(task_data["task_list"]) == int(task_data["max_count"]):
-        status = "completed"
-    return jsonify({"status":status, "data": task_data}), 200
-
+@app.route('/status/<task_id>', methods=['GET'])
+def get_status(task_id):
+    if task_id not in tasks:
+        return jsonify({"error": "Invalid task ID"}), 400
+    task_data = tasks[task_id]
+    return jsonify(task_data), 200
 
 @app.route('/', methods=['GET'])
 def index():
@@ -325,4 +316,3 @@ def index():
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
-
