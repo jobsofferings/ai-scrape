@@ -283,6 +283,7 @@ def scrape_data():
                             img_urls = img_list
                             base_url = "https://one-api.bltcy.top/v1"
                             answer = askAI(img_urls, base_url)
+                            print(answer, 'answer')
                             data[0] = f'https://item.jd.com/{data[0]}.html'
                             answer = answer.split('{')[-1].split('}')[0]
                             answer = '{' + answer + '}'
