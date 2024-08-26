@@ -14,7 +14,7 @@ import time
 import requests
 import ast
 import threading
-cookie = 'shshshfpa=09a241cf-2b35-148f-a467-608a6ffd9c9a-1724124209; shshshfpx=09a241cf-2b35-148f-a467-608a6ffd9c9a-1724124209; jcap_dvzw_fp=r5W74EFsEizNPWU0u5xAD1WVVPreE63xBXUoHJ0QyqKGfYTpGey8QGltMBeC4dvwkqmkeBjdEdOeBITKFmWUKw==; pt_key=AAJmxAxHADBW7OIrZeKz6uFXZMdpqh1PRvU3Y-JMcvjpieXHX85J77jhedjj-0O0zekFtuzvJws; pt_pin=jobsofferings; pt_token=yc6lzw1t; pwdt_id=jobsofferings; sfstoken=tk01mee981d42a8sMXgyKzIrMiszUpLq8cSL359vgLYvzLNLAmlIlQfuMPxtAVqusy/jZ0V/eF1g3DWuo7gAqq9bTcJD; wxa_level=1; retina=1; cid=9; jxsid=17241242316955022428; appCode=ms0ca95114; webp=1; visitkey=7620598431207933762; cd_eid=jdd03MM775SDVJOGZQWJDSUMN6JZF5SZO4BJ4H3GI75ZIU277DWZ72JC42EFTV26IJSMOED5NNOGMF77WXFRTOCGVWOAHLQAAAAMRNXH7RQAAAAAACBFFX4Q7QIM3UQX; PPRD_P=UUID.17241242094781745442924; jxsid_s_u=https%3A//my.m.jd.com/index.html; sc_width=1512; [object Object]=undefined; wqmnx1=MDEyNjM5OG1vaGV1czU5aShDZSAgcC8gbG9uYjQvMjctNFJIISk%3D; __wga=1724124235287.1724124232125.1724124232125.1724124232125.2.1; jxsid_s_t=1724124235303; x-rp-evtoken=N-nAb5Oj6OS1u8hkvixIgPcyLM1v2d3k-1bk0VT5ufEW02UoSaf9YGxsxWROImJOOmT1sy52-a2i3F1QEgW5rwm2S7wulc0rVRi5ijigitbrQKrAAyFflZT3YJ2R9B67kdidFOVI4CHVIfynZQpY5e_u-8td_pQTOci6CLWN8EH4ZflW8bLBm9J13tkdbjG4tANhiDp3b9xiwsyPKqgP_1RYt9y9ojybZWMmtsazF68%3D; ipLoc-djd=15-1213-0-0; jsavif=1; 3AB9D23F7A4B3CSS=jdd03MM775SDVJOGZQWJDSUMN6JZF5SZO4BJ4H3GI75ZIU277DWZ72JC42EFTV26IJSMOED5NNOGMF77WXFRTOCGVWOAHLQAAAAMRNXSJB3YAAAAACBSZOQOOVLBZOUX; __jdu=17241242094781745442924; shshshfpb=BApXSagTsbvRAVO_f2XL6OxauCf3UOy1ABmZTRSZo9xJ1P9ZUf5XZlBzuniL0NJUrHxFe1g; mba_sid=17241242096813854832132323122.7; __jda=95931165.17241242094781745442924.1724124209.1724124209.1724124209.1; __jdb=95931165.9.17241242094781745442924|1.1724124209; __jdc=95931165; 3AB9D23F7A4B3C9B=MM775SDVJOGZQWJDSUMN6JZF5SZO4BJ4H3GI75ZIU277DWZ72JC42EFTV26IJSMOED5NNOGMF77WXFRTOCGVWOAHLQ'
+cookie = 'shshshfpa=09a241cf-2b35-148f-a467-608a6ffd9c9a-1724124209; shshshfpx=09a241cf-2b35-148f-a467-608a6ffd9c9a-1724124209; jcap_dvzw_fp=r5W74EFsEizNPWU0u5xAD1WVVPreE63xBXUoHJ0QyqKGfYTpGey8QGltMBeC4dvwkqmkeBjdEdOeBITKFmWUKw==; pt_key=AAJmy9lGADB0aU2WqsQT449quJeZjiRuVbW8prQmnpivXPt_Jo0t-iKx_lQlprO6WsNY2wyklNs; pt_pin=jobsofferings; pt_token=zndlfgb9; pwdt_id=jobsofferings; sfstoken=tk01mee981d42a8sMXgyKzIrMiszUpLq8cSL359vgLYvzLNLAmlIlQfuMPxtAVqusy/jZ0V/eF1g3DWuo7gAqq9bTcJD; wxa_level=1; retina=1; cid=9; jxsid=17241242316955022428; appCode=ms0ca95114; webp=1; visitkey=7620598431207933762; cd_eid=jdd03MM775SDVJOGZQWJDSUMN6JZF5SZO4BJ4H3GI75ZIU277DWZ72JC42EFTV26IJSMOED5NNOGMF77WXFRTOCGVWOAHLQAAAAMRNXH7RQAAAAAACBFFX4Q7QIM3UQX; PPRD_P=UUID.17241242094781745442924; jxsid_s_u=https%3A//my.m.jd.com/index.html; sc_width=1512; [object Object]=undefined; wqmnx1=MDEyNjM5OG1vaGV1czU5aShDZSAgcC8gbG9uYjQvMjctNFJIISk%3D; __wga=1724124235287.1724124232125.1724124232125.1724124232125.2.1; jxsid_s_t=1724124235303; x-rp-evtoken=N-nAb5Oj6OS1u8hkvixIgPcyLM1v2d3k-1bk0VT5ufEW02UoSaf9YGxsxWROImJOOmT1sy52-a2i3F1QEgW5rwm2S7wulc0rVRi5ijigitbrQKrAAyFflZT3YJ2R9B67kdidFOVI4CHVIfynZQpY5e_u-8td_pQTOci6CLWN8EH4ZflW8bLBm9J13tkdbjG4tANhiDp3b9xiwsyPKqgP_1RYt9y9ojybZWMmtsazF68%3D; ipLoc-djd=15-1213-0-0; jsavif=1; 3AB9D23F7A4B3CSS=jdd03MM775SDVJOGZQWJDSUMN6JZF5SZO4BJ4H3GI75ZIU277DWZ72JC42EFTV26IJSMOED5NNOGMF77WXFRTOCGVWOAHLQAAAAMRNXSJB3YAAAAACBSZOQOOVLBZOUX; __jdu=17241242094781745442924; shshshfpb=BApXSagTsbvRAVO_f2XL6OxauCf3UOy1ABmZTRSZo9xJ1P9ZUf5XZlBzuniL0NJUrHxFe1g; mba_sid=17241242096813854832132323122.7; __jda=95931165.17241242094781745442924.1724124209.1724124209.1724124209.1; __jdb=95931165.9.17241242094781745442924|1.1724124209; __jdc=95931165; 3AB9D23F7A4B3C9B=MM775SDVJOGZQWJDSUMN6JZF5SZO4BJ4H3GI75ZIU277DWZ72JC42EFTV26IJSMOED5NNOGMF77WXFRTOCGVWOAHLQ'
 
 app = Flask(__name__)
 
@@ -142,9 +142,14 @@ def askAI(img_url, base_url):
 
     promt = \
     """
-    请结合所给图片进行分析，参照以下格式，提供产品详细信息需要包括：['Product volume/size(产品体积/尺寸)', 'Packageformat(包装形式)', 'Package material(包装材料)', 'Label(标签)', 'Numbers of printing color (印刷颜色数量）', 'Dimension(尺寸)', 'Company(公司)', 'Ingredient of product (产品成分)']
-    回复内容按照以下形式组织，没有的元素标为不详，图片有的元素必须具体给出：
-    {'Product volume/size(产品体积/尺寸)': '不详', 'Packageformat(包装形式)': '塑料瓶装', 'Package material(包装材料)': '高密度聚乙烯（HDPE）塑料', 'Label(标签)': '除菌除螨、99%除菌、72小时抑菌、新升级', 'Numbers of printing color (印刷颜色数量）': '四种颜色：红色、白色、蓝色和绿色', 'Dimension(尺寸)': '不详', 'Company(公司)': 'Procter & Gamble (宝洁公司)', 'Ingredient of product (产品成分)': '不详'}
+    你是一个产品经理，需要对以下产品进行详细的描述,如果所给图片不是产品，请按格式返回不详。
+    请结合所给图片进行分析，参照以下格式，提供产品详细信息需要包括：{'Closure': Pump:{Sub describe, Material, Description}, 'Body: Bottle:{Material, Description}', 'Decoration: Label :{Material, Description}', 'product format', 'package format'}
+    回复内容按照以下形式组织为json格式，没有的元素标为不详，图片有的元素必须具体给出：
+    {'Closure': 'Pump':{'Sub describe': 'Liquip pump', 'Material': 'PP', 'Description': '旋转开启泵头后，按压泵头将液体吸出'}, 'Body': 'Bottle':{'Material': 'HDPE', 'Description': '没有标签的空白瓶'}, 'Decoration': 'Label' :{'Material': 'PE', 'Description': '有背胶粘贴在瓶子上，并涵盖产品图文描述信息的贴纸。'}, 'product format': 'Liquid（啫喱质地）', 'package format': 'bottle with pump'}
+    产品的材质一般为： PP, HDPE, PET等。请根据产品的实际情况进行描述，尽量给出详细准确的答案。
+    pump 的 Sub describe 有三种情况：Liquip pump, Spray pump, Foaming pump
+    其中，没有pump的产品，判断是否有cap，如果有cap，将cap的信息放在Closure中, 例如 {'Closure': Cap:{Material: PP, Description: 盖子，挤压瓶子可以直接把液体倒出。}}
+    其中，Decoration中的Label信息，如果包装上的贴纸是环绕瓶身，将其描述为ssl。例如：{ 'Decoration': SSL :{Material: PETG, Description: 瓶子外面的标签膜，标签膜热收缩后包裹整个瓶子}}。但若不是环绕瓶身的标签，将其描述为Label。例如：{ 'Decoration': Label :{Material: PE, Description: 有背胶粘贴在瓶子上，并涵盖产品图文描述信息的贴纸。}
     """
     client = OpenAI()
     client.base_url = base_url
@@ -282,7 +287,7 @@ def scrape_data():
                             answer = answer.split('{')[-1].split('}')[0]
                             answer = '{' + answer + '}'
                             answer = ast.literal_eval(answer)
-                            input1 = data + [leixing, pinlei, guochang] + [answer['Product volume/size(产品体积/尺寸)'], answer['Packageformat(包装形式)'], answer['Package material(包装材料)'], answer['Label(标签)'], answer['Numbers of printing color (印刷颜色数量）'], answer['Dimension(尺寸)'], answer['Company(公司)'], answer['Ingredient of product (产品成分)']]
+                            input1 = data + [leixing, pinlei, guochang] + [answer['Product volume/size(产品体积/尺寸)'], answer['Packageformat(包装形式)'], answer['Package material(包装材料)'], answer['Label(标签)'], answer['Numbers of printing color (印刷颜色数量）'], answer['Dimension(尺寸)'], answer['Company(公司)'], answer['Ingredient of product (产品成分)'], answer['Img Link'], answer['Closure'], answer['Body'], answer['Decroation'], answer['product format'], answer['package format']]
                             time.sleep(2)
                             print(f"当前正在第{count}条！！！", input1)
                             with tasks_lock:
