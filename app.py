@@ -14,7 +14,7 @@ import time
 import requests
 import ast
 import threading
-cookie = 'shshshfpa=09a241cf-2b35-148f-a467-608a6ffd9c9a-1724124209; shshshfpx=09a241cf-2b35-148f-a467-608a6ffd9c9a-1724124209; jcap_dvzw_fp=r5W74EFsEizNPWU0u5xAD1WVVPreE63xBXUoHJ0QyqKGfYTpGey8QGltMBeC4dvwkqmkeBjdEdOeBITKFmWUKw==; pt_key=AAJmy9lGADB0aU2WqsQT449quJeZjiRuVbW8prQmnpivXPt_Jo0t-iKx_lQlprO6WsNY2wyklNs; pt_pin=jobsofferings; pt_token=zndlfgb9; pwdt_id=jobsofferings; sfstoken=tk01mee981d42a8sMXgyKzIrMiszUpLq8cSL359vgLYvzLNLAmlIlQfuMPxtAVqusy/jZ0V/eF1g3DWuo7gAqq9bTcJD; wxa_level=1; retina=1; cid=9; jxsid=17241242316955022428; appCode=ms0ca95114; webp=1; visitkey=7620598431207933762; cd_eid=jdd03MM775SDVJOGZQWJDSUMN6JZF5SZO4BJ4H3GI75ZIU277DWZ72JC42EFTV26IJSMOED5NNOGMF77WXFRTOCGVWOAHLQAAAAMRNXH7RQAAAAAACBFFX4Q7QIM3UQX; PPRD_P=UUID.17241242094781745442924; jxsid_s_u=https%3A//my.m.jd.com/index.html; sc_width=1512; [object Object]=undefined; wqmnx1=MDEyNjM5OG1vaGV1czU5aShDZSAgcC8gbG9uYjQvMjctNFJIISk%3D; __wga=1724124235287.1724124232125.1724124232125.1724124232125.2.1; jxsid_s_t=1724124235303; x-rp-evtoken=N-nAb5Oj6OS1u8hkvixIgPcyLM1v2d3k-1bk0VT5ufEW02UoSaf9YGxsxWROImJOOmT1sy52-a2i3F1QEgW5rwm2S7wulc0rVRi5ijigitbrQKrAAyFflZT3YJ2R9B67kdidFOVI4CHVIfynZQpY5e_u-8td_pQTOci6CLWN8EH4ZflW8bLBm9J13tkdbjG4tANhiDp3b9xiwsyPKqgP_1RYt9y9ojybZWMmtsazF68%3D; ipLoc-djd=15-1213-0-0; jsavif=1; 3AB9D23F7A4B3CSS=jdd03MM775SDVJOGZQWJDSUMN6JZF5SZO4BJ4H3GI75ZIU277DWZ72JC42EFTV26IJSMOED5NNOGMF77WXFRTOCGVWOAHLQAAAAMRNXSJB3YAAAAACBSZOQOOVLBZOUX; __jdu=17241242094781745442924; shshshfpb=BApXSagTsbvRAVO_f2XL6OxauCf3UOy1ABmZTRSZo9xJ1P9ZUf5XZlBzuniL0NJUrHxFe1g; mba_sid=17241242096813854832132323122.7; __jda=95931165.17241242094781745442924.1724124209.1724124209.1724124209.1; __jdb=95931165.9.17241242094781745442924|1.1724124209; __jdc=95931165; 3AB9D23F7A4B3C9B=MM775SDVJOGZQWJDSUMN6JZF5SZO4BJ4H3GI75ZIU277DWZ72JC42EFTV26IJSMOED5NNOGMF77WXFRTOCGVWOAHLQ'
+cookie = 'shshshfpa=09a241cf-2b35-148f-a467-608a6ffd9c9a-1724124209; shshshfpx=09a241cf-2b35-148f-a467-608a6ffd9c9a-1724124209; jcap_dvzw_fp=r5W74EFsEizNPWU0u5xAD1WVVPreE63xBXUoHJ0QyqKGfYTpGey8QGltMBeC4dvwkqmkeBjdEdOeBITKFmWUKw==; pt_key=AAJmy_saADBrIztw5jkuyIC-6plqI3iBCw9qNN0kUAx134ZFRLpPDa27BGWYfZ6A4w2ERr7Aa8k; pt_pin=jd_731ca84be29c8; pt_token=3ivntcvj; pwdt_id=jd_731ca84be29c8; sfstoken=tk01mee981d42a8sMXgyKzIrMiszUpLq8cSL359vgLYvzLNLAmlIlQfuMPxtAVqusy/jZ0V/eF1g3DWuo7gAqq9bTcJD; wxa_level=1; retina=1; cid=9; jxsid=17241242316955022428; appCode=ms0ca95114; webp=1; visitkey=7620598431207933762; cd_eid=jdd03MM775SDVJOGZQWJDSUMN6JZF5SZO4BJ4H3GI75ZIU277DWZ72JC42EFTV26IJSMOED5NNOGMF77WXFRTOCGVWOAHLQAAAAMRNXH7RQAAAAAACBFFX4Q7QIM3UQX; PPRD_P=UUID.17241242094781745442924; jxsid_s_u=https%3A//my.m.jd.com/index.html; sc_width=1512; [object Object]=undefined; wqmnx1=MDEyNjM5OG1vaGV1czU5aShDZSAgcC8gbG9uYjQvMjctNFJIISk%3D; __wga=1724124235287.1724124232125.1724124232125.1724124232125.2.1; jxsid_s_t=1724124235303; x-rp-evtoken=N-nAb5Oj6OS1u8hkvixIgPcyLM1v2d3k-1bk0VT5ufEW02UoSaf9YGxsxWROImJOOmT1sy52-a2i3F1QEgW5rwm2S7wulc0rVRi5ijigitbrQKrAAyFflZT3YJ2R9B67kdidFOVI4CHVIfynZQpY5e_u-8td_pQTOci6CLWN8EH4ZflW8bLBm9J13tkdbjG4tANhiDp3b9xiwsyPKqgP_1RYt9y9ojybZWMmtsazF68%3D; ipLoc-djd=15-1213-0-0; jsavif=1; 3AB9D23F7A4B3CSS=jdd03MM775SDVJOGZQWJDSUMN6JZF5SZO4BJ4H3GI75ZIU277DWZ72JC42EFTV26IJSMOED5NNOGMF77WXFRTOCGVWOAHLQAAAAMRNXSJB3YAAAAACBSZOQOOVLBZOUX; __jdu=17241242094781745442924; shshshfpb=BApXSagTsbvRAVO_f2XL6OxauCf3UOy1ABmZTRSZo9xJ1P9ZUf5XZlBzuniL0NJUrHxFe1g; mba_sid=17241242096813854832132323122.7; __jda=95931165.17241242094781745442924.1724124209.1724124209.1724124209.1; __jdb=95931165.9.17241242094781745442924|1.1724124209; __jdc=95931165; 3AB9D23F7A4B3C9B=MM775SDVJOGZQWJDSUMN6JZF5SZO4BJ4H3GI75ZIU277DWZ72JC42EFTV26IJSMOED5NNOGMF77WXFRTOCGVWOAHLQ'
 
 app = Flask(__name__)
 
@@ -281,14 +281,29 @@ def scrape_data():
                             answer = askAI(img_urls, base_url)
                             print(answer, 'answer')
                             data[0] = f'https://item.jd.com/{data[0]}.html'
-                            answer = answer.split('{')[-1].split('}')[0]
-                            answer = '{' + answer + '}'
-                            answer = ast.literal_eval(answer)
-                            input1 = data + [leixing, pinlei, guochang] + [answer['Product volume/size(产品体积/尺寸)'], answer['Packageformat(包装形式)'], answer['Package material(包装材料)'], answer['Label(标签)'], answer['Numbers of printing color (印刷颜色数量）'], answer['Dimension(尺寸)'], answer['Company(公司)'], answer['Ingredient of product (产品成分)'], answer['Img Link'], answer['Closure'], answer['Body'], answer['Decroation'], answer['product format'], answer['package format']]
-                            time.sleep(2)
-                            print(f"当前正在第{count}条！！！", input1)
+                            # answer 使用 JSON 格式解析出来，注意这里的 answer 是字符串，并且需要确认是否有 ```json ``` 标记
+                            # if answer.startswith('```json') and answer.endswith('```'):
+                            #     answer = answer[7:-3]
+                            # answer = answer.replace("'", '"') 
+                            # answer = json.loads(answer)
+                            # # answer = answer.split('{')[-1].split('}')[0]
+                            # # answer = '{' + answer + '}'
+                            # # answer = ast.literal_eval(answer)
+                            # print(answer, 'answer')
+                            # print(data, 'data')
+                            # print([leixing, pinlei, guochang], '【】')
+                            # input1 = data + [leixing, pinlei, guochang] + [answer['Product volume/size(产品体积/尺寸)'], answer['Packageformat(包装形式)'], answer['Package material(包装材料)'], answer['Label(标签)'], answer['Numbers of printing color (印刷颜色数量）'], answer['Dimension(尺寸)'], answer['Company(公司)'], answer['Ingredient of product (产品成分)'], img_urls, answer['Closure'], answer['Body'], answer['Decoration'], answer['product format'], answer['package format']]
+                            # time.sleep(2)
+                            # print(f"当前正在第{count}条！！！", input1)
                             with tasks_lock:
-                              tasks[task_id]["result"].append(input1)
+                              tasks[task_id]["result"].append({
+                                  "data": data,
+                                  "leixing": leixing,
+                                  "pinlei": pinlei,
+                                  "guochang": guochang,
+                                  "img_urls": img_urls,
+                                  "answer": answer
+                              })
                               tasks[task_id]["task_list"].append('true')
                         except Exception as e:
                             with tasks_lock:

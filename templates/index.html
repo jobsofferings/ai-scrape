@@ -265,9 +265,46 @@
                 progress.classList.add('display-none');
                 const downloadButton = document.getElementById('download-button');
                 downloadButton.classList.remove('display-none');
+                console.log(data, 'data');
+                const dataSource = data.result.map(item => {
+                  console.log(item.answer, 'item.answer');
+                  // # answer 使用 JSON 格式解析出来，注意这里的 answer 是字符串，并且需要确认是否有 ```json ``` 标记
+                  let answer = item.answer;
+                  if (answer.startsWith('```json')) {
+                    answer = answer.replace('```json', '');
+                  }
+                  if (answer.endsWith('```')) {
+                    answer = answer.replace('```', '');
+                  }
+
+                  answer = answer.replace(/'/g, '"');
+                  
+                  const answerJson = safeJsonParse(answer) || {};
+
+                  if (Object.keys(answerJson).length === 0) {
+                    return [];
+                  }
+
+                    console.log(answerJson, 'answerJson')
+
+                  function formatText (obj) {
+                    if (!obj) {
+                      return '不详';
+                    }
+                    if (Object.keys(obj).length === 0 || typeof obj === 'string') {
+                      return '不详';
+                    } else {
+                      const value = Object.values(obj)?.[0];
+                      return `Material: ${value.Material}, Description: ${value.Description}`;
+                    }
+                  }
+                  console.log('列：', [...item.data, item.leixing, item?.pinlei, item?.guochang, answerJson['Product volume/size(产品体积/尺寸)'], answerJson['Packageformat(包装形式)'], answerJson['Package material(包装材料)'], answerJson['Label(标签)'], answerJson['Numbers of printing color (印刷颜色数量）'], answerJson['Dimension(尺寸)'], answerJson['Company(公司)'], answerJson['Ingredient of product (产品成分)'], item.img_urls[0] || '', formatText(answerJson['Closure']) || '不详', formatText(answerJson['Body']) || '不详', formatText(answerJson['Decoration']) || '不详', answerJson['product format'], answerJson['package format']])
+                  return [...item.data, item.leixing, item?.pinlei, item?.guochang, answerJson['Product volume/size(产品体积/尺寸)'], answerJson['Packageformat(包装形式)'], answerJson['Package material(包装材料)'], answerJson['Label(标签)'], answerJson['Numbers of printing color (印刷颜色数量）'], answerJson['Dimension(尺寸)'], answerJson['Company(公司)'], answerJson['Ingredient of product (产品成分)'], item.img_urls[0] || '', formatText(answerJson['Closure']) || '不详', formatText(answerJson['Body']) || '不详', formatText(answerJson['Decoration']) || '不详', answerJson['product format'], answerJson['package format']];
+                }).filter(item => item.length > 0);
+                console.log(dataSource, 'dataSource');
                 downloadButton.addEventListener('click', () => {
                   excelExport({
-                    dataSource: data.result,
+                    dataSource,
                     titles: ['链接','Description(描述)','价格','店铺','Categories(类别)','Product format(产品规格)','Manufacturing location(生产地点)'
                         ,'Product volume/size(产品体积/尺寸)','Packageformat(包装形式)','Package material(包装材料)','Label(标签)'
                         ,'Numbers of printing color (印刷颜色数量）','Dimension(尺寸)','Company(公司)','Ingredient of product (产品成分)',
@@ -282,6 +319,8 @@
                 const progress = document.getElementById('progress');
                 loadingIcon.classList.add('hidden');
                 progress.classList.add('display-none');
+                progressBar.style.width = '0%';
+                progressBar.setAttribute('aria-valuenow', 0);
                 baseAlert('任务失败', 'error');
               }
             })
@@ -290,8 +329,11 @@
               clearInterval(intervalId);
               const loadingIcon = document.getElementById('loading-icon');
               const progress = document.getElementById('progress');
+              const progressBar = document.getElementById('progress-bar');
               loadingIcon.classList.add('hidden');
               progress.classList.add('display-none');
+              progressBar.style.width = '0%';
+              progressBar.setAttribute('aria-valuenow', 0);
               baseAlert('任务请求错误');
             });
           }, 5000);
@@ -334,7 +376,16 @@
             console.error('任务请求错误:', error);
             loadingIcon.classList.add('hidden');
             progress.classList.add('display-none');
+            baseAlert('任务请求错误', 'error');
           });
+        }
+
+        function safeJsonParse(jsonString) {
+          try {
+            return JSON.parse(jsonString);
+          } catch (error) {
+            return {};
+          }
         }
       </script>
     </body>
