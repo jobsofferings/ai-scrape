@@ -142,14 +142,10 @@ def askAI(img_url, base_url):
 
     promt = \
     """
-    你是一个产品经理，需要对以下产品进行详细的描述,如果所给图片不是产品，请按格式返回不详。
-    请结合所给图片进行分析，参照以下格式，提供产品详细信息需要包括：{'Closure': Pump:{Sub describe, Material, Description}, 'Body: Bottle:{Material, Description}', 'Decoration: Label :{Material, Description}', 'product format', 'package format'}
-    回复内容按照以下形式组织为json格式，没有的元素标为不详，图片有的元素必须具体给出：
-    {'Closure': 'Pump':{'Sub describe': 'Liquip pump', 'Material': 'PP', 'Description': '旋转开启泵头后，按压泵头将液体吸出'}, 'Body': 'Bottle':{'Material': 'HDPE', 'Description': '没有标签的空白瓶'}, 'Decoration': 'Label' :{'Material': 'PE', 'Description': '有背胶粘贴在瓶子上，并涵盖产品图文描述信息的贴纸。'}, 'product format': 'Liquid（啫喱质地）', 'package format': 'bottle with pump'}
-    产品的材质一般为： PP, HDPE, PET等。请根据产品的实际情况进行描述，尽量给出详细准确的答案。
-    pump 的 Sub describe 有三种情况：Liquip pump, Spray pump, Foaming pump
-    其中，没有pump的产品，判断是否有cap，如果有cap，将cap的信息放在Closure中, 例如 {'Closure': Cap:{Material: PP, Description: 盖子，挤压瓶子可以直接把液体倒出。}}
-    其中，Decoration中的Label信息，如果包装上的贴纸是环绕瓶身，将其描述为ssl。例如：{ 'Decoration': SSL :{Material: PETG, Description: 瓶子外面的标签膜，标签膜热收缩后包裹整个瓶子}}。但若不是环绕瓶身的标签，将其描述为Label。例如：{ 'Decoration': Label :{Material: PE, Description: 有背胶粘贴在瓶子上，并涵盖产品图文描述信息的贴纸。}
+    请结合所给图片进行分析，参照以下格式，提供产品详细信息需要包括：['Product volume/size(产品体积/尺寸)', 'Packageformat(包装形式)', 'Package material(包装材料)', 'Label(标签)', 'Numbers of printing color (印刷颜色数量）', 'Dimension(尺寸)', 'Company(公司)', 'Ingredient of product (产品成分)', 'Closure', 'Body', 'Decoration', 'product format', 'package format']
+回复内容按照以下形式组织，没有的元素标为不详，图片有的元素必须具体给出：
+{'Product volume/size(产品体积/尺寸)': '不详', 'Packageformat(包装形式)': '塑料瓶装', 'Package material(包装材料)': '高密度聚乙烯（HDPE）塑料', 'Label(标签)': '除菌除螨、99%除菌、72小时抑菌、新升级', 'Numbers of printing color (印刷颜色数量）': '四种颜色：红色、白色、蓝色和绿色', 'Dimension(尺寸)': '不详', 'Company(公司)': 'Procter & Gamble (宝洁公司)', 'Ingredient of product (产品成分)': '不详', 'Closure': {'Pump': {'Sub describe': 'Liquip pump', 'Material': 'PP', 'Description': '旋转开启泵头后，按压泵头将液体吸出'}}, 'Body': {'Bottle': {'Material': 'HDPE', 'Description': '没有标签的空白瓶'}}, 'Decoration': {'Label': {'Material': 'PE', 'Description': '有背胶粘贴在瓶子上，并涵盖产品图文描述信息的贴纸。'}}, 'product format': 'Liquid（啫喱质地）', 'package format': 'bottle with pump'}
+产品的材质一般为： PP, HDPE, PET等。请根据产品的实际情况进行描述，尽量给出详细准确的答案。pump 的 Sub describe 有三种情况：Liquip pump, Spray pump, Foaming pump。没有pump的产品，判断是否有cap，如果有cap，将cap的信息放在Closure中, 例如 {'Closure': {'Cap': {'Material': 'PP', 'Description': '盖子，挤压瓶子可以直接把液体倒出。'}}}。Decoration中的Label信息，如果包装上的贴纸是环绕瓶身，将其描述为ssl。例如：{'Decoration': {'SSL': {'Material': 'PETG', 'Description': '瓶子外面的标签膜，标签膜热收缩后包裹整个瓶子'}}}。若不是环绕瓶身的标签，将其描述为Label。例如：{'Decoration': {'Label': {'Material': 'PE', 'Description': '有背胶粘贴在瓶子上，并涵盖产品图文描述信息的贴纸。'}}} 
     """
     client = OpenAI()
     client.base_url = base_url
