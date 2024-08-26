@@ -302,6 +302,7 @@
                   return [...item.data, item.leixing, item?.pinlei, item?.guochang, answerJson['Product volume/size(产品体积/尺寸)'], answerJson['Packageformat(包装形式)'], answerJson['Package material(包装材料)'], answerJson['Label(标签)'], answerJson['Numbers of printing color (印刷颜色数量）'], answerJson['Dimension(尺寸)'], answerJson['Company(公司)'], answerJson['Ingredient of product (产品成分)'], item.img_urls[0] || '', formatText(answerJson['Closure']) || '不详', formatText(answerJson['Body']) || '不详', formatText(answerJson['Decoration']) || '不详', answerJson['product format'], answerJson['package format']];
                 }).filter(item => item.length > 0);
                 console.log(dataSource, 'dataSource');
+                const keyword = document.getElementById('keyword').value;
                 downloadButton.addEventListener('click', () => {
                   excelExport({
                     dataSource,
@@ -309,7 +310,7 @@
                         ,'Product volume/size(产品体积/尺寸)','Packageformat(包装形式)','Package material(包装材料)','Label(标签)'
                         ,'Numbers of printing color (印刷颜色数量）','Dimension(尺寸)','Company(公司)','Ingredient of product (产品成分)',
                         'Img Link', 'Closure', 'Body', 'Decroation', 'product format', 'package format'],
-                    fileName: 'data',
+                    fileName: `${all_length} - ${keyword}`,
                     suffix: 'csv',
                   })
                 });
